@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "fs": "0.0.1-security",
-    "puppeteer": "^20.4.0"
+    "pg": "^8.11.0",
+    "puppeteer": "^20.4.0",
+    "sequelize": "^6.31.1"
   }
 }

@@ -1,4 +1,4 @@
-function getEnv (name, defaults) {
+function getEnv(name, defaults) {
     if (!process.env[name]) {
         return defaults
     } else {
@@ -8,7 +8,14 @@ function getEnv (name, defaults) {
 
 const config = {
     url: {
-        sbermegamarket: 'https://sbermegamarket.ru/catalog/videokarty/'
+        sbermegamarket: {
+            smartphone: 'https://sbermegamarket.ru/catalog/smartfony/'
+        }
+    },
+    categories: {
+        sbermegamarket: {
+            smartphone: 1
+        }
     },
     cockies: {
         sbermegamarket: {
@@ -31,6 +38,13 @@ const config = {
     },
     fileName: {
         sbermegamarket: './files/sbermegamarket.txt'
+    },
+    db: {
+        host: 'localhost',
+        port: 5432,
+        name: 'parser',
+        user: 'postgres',
+        password: '04189666216d'
     }
 };
 
