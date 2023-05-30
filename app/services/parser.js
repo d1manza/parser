@@ -7,17 +7,27 @@ class Parser {
     constructor() {
     }
 
-    async parsePage(url) {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
-        await page.setExtraHTTPHeaders(config.cockies.sbermegamarket);
-        await page.goto(config.url.sbermegamarket.smartphone);
-        await page.waitForTimeout(4000);
-        let data = await page.evaluate(this.processing);
-        await browser.close();
-        data.forEach((item) => {
-            db.insertParsingUrl(item);
-        });
+    async parsePage(url_postfix, categories_id, page_count) {
+        for (let i = 1; i <= page_count; i++) {
+            const browser = await puppeteer.launch();
+            const page = await browser.newPage();
+            await page.setExtraHTTPHeaders(config.cockies.sbermegamarket);
+            await page.goto(`${config.url.sbermegamarket}${url_postfix}/page-${i}/`);
+            await page.waitForTimeout(4000);
+            let data = await page.evaluate(this.processing);
+            await browser.close();
+            data.forEach((item) => {
+                let result = {
+                    name: item.name,
+                    cost: item.cost,
+                    cashback: item.cashback,
+                    url: item.url,
+                    categories_id: categories_id
+                };
+                db.findOrCreateParsingUrl(result);
+            });
+        }
+
     }
 
     async processing() {
@@ -33,8 +43,7 @@ class Parser {
                     name: name,
                     cost: cost,
                     cashback: cashback,
-                    url: url,
-                    categories_id: 1
+                    url: url
                 });
             }
         });

@@ -4,21 +4,17 @@ const sequelize = new Sequelize(`postgres://${config.db.user}:${config.db.passwo
     logging: false
 });
 
-const ParsingUrls = sequelize.define('parsing_urls', {
+const Categories = sequelize.define('categories', {
     name: {
         type: DataTypes.STRING,
         allowNull: true
     },
-    cost: {
-        type: DataTypes.NUMBER,
-        allowNull: true
-    },
-    cashback: {
-        type: DataTypes.NUMBER,
-        allowNull: true
-    },
-    url: {
+    url_postfix: {
         type: DataTypes.STRING,
+        allowNull: false
+    },
+    page_count: {
+        type: DataTypes.NUMBER,
         allowNull: false
     },
     createdAt: {
@@ -31,16 +27,6 @@ const ParsingUrls = sequelize.define('parsing_urls', {
         allowNull: false,
         defaultValue: Sequelize.NOW
     },
-    deletedAt: {
-        type: DataTypes.DATE,
-        allowNull: true
-    },
-    categories_id: {
-        type: DataTypes.NUMBER,
-        allowNull: false,
-    }
 }, {});
 
-module.exports = ParsingUrls;
-
-
+module.exports = Categories;

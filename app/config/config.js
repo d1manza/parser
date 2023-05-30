@@ -8,14 +8,7 @@ function getEnv(name, defaults) {
 
 const config = {
     url: {
-        sbermegamarket: {
-            smartphone: 'https://sbermegamarket.ru/catalog/smartfony/'
-        }
-    },
-    categories: {
-        sbermegamarket: {
-            smartphone: 1
-        }
+        sbermegamarket: 'https://sbermegamarket.ru/catalog/'
     },
     cockies: {
         sbermegamarket: {
