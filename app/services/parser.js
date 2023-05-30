@@ -7,8 +7,9 @@ class Parser {
     constructor() {
     }
 
-    async parsePage(url_postfix, categories_id, page_count) {
+    async parsePage(url_postfix, categories_id, page_count, name, cashback_coef) {
         for (let i = 1; i <= page_count; i++) {
+            console.log(`Start parsing categories ${name}, page - ${i}`);
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
             await page.setExtraHTTPHeaders(config.cockies.sbermegamarket);
@@ -17,15 +18,18 @@ class Parser {
             let data = await page.evaluate(this.processing);
             await browser.close();
             data.forEach((item) => {
-                let result = {
-                    name: item.name,
-                    cost: item.cost,
-                    cashback: item.cashback,
-                    url: item.url,
-                    categories_id: categories_id
-                };
-                db.findOrCreateParsingUrl(result);
+                if (item.cashback / item.cost >= cashback_coef) {
+                    let result = {
+                        name: item.name,
+                        cost: item.cost,
+                        cashback: item.cashback,
+                        url: item.url,
+                        categories_id: categories_id
+                    };
+                    db.findOrCreateParsingUrl(result);
+                }
             });
+            console.log(`End parsing categories ${name}, page - ${i}`);
         }
 
     }

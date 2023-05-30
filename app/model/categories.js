@@ -27,6 +27,11 @@ const Categories = sequelize.define('categories', {
         allowNull: false,
         defaultValue: Sequelize.NOW
     },
+    cashback_coef: {
+        type: DataTypes.NUMBER,
+        allowNull: false,
+        defaultValue: 0.3
+    }
 }, {});
 
 module.exports = Categories;

@@ -7,8 +7,7 @@ const db = new Db();
 async function run () {
     const categories = await db.selectCategories();
     categories.forEach((item) => {
-        console.log(`Start parsing: ${item.name}`);
-        parse.parsePage(item.url_postfix, item.id, item.page_count);
+        parse.parsePage(item.url_postfix, item.id, item.page_count, item.name, item.cashback_coef);
     });
 }
 
