@@ -1,5 +1,5 @@
 const {Sequelize, DataTypes} = require('sequelize');
-const config = require('../config/config')
+const config = require('../config/config');
 const sequelize = new Sequelize(`postgres://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.name}`, {
     logging: false
 });
@@ -7,7 +7,7 @@ const sequelize = new Sequelize(`postgres://${config.db.user}:${config.db.passwo
 const ParsingUrls = sequelize.define('parsing_urls', {
     name: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
     },
     cost: {
         type: DataTypes.NUMBER,

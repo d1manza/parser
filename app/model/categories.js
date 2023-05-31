@@ -7,7 +7,7 @@ const sequelize = new Sequelize(`postgres://${config.db.user}:${config.db.passwo
 const Categories = sequelize.define('categories', {
     name: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: true,
     },
     url_postfix: {
         type: DataTypes.STRING,
