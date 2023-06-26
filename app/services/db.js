@@ -38,18 +38,6 @@ class Db {
         }
     }
 
-    async selectParsingUrl() {
-        const products = await sequelize.query('select c.name,\n' +
-            '       array_agg(concat(\'Название товара: \', pu.name, \' URL: \', pu.url, \' Цена: \', pu.cost, \' Кэшбэк: \', pu.cashback))\n' +
-            'from parsing_urls pu\n' +
-            '         join categories c on c.id = pu.categories_id\n' +
-            'group by c.name;', {
-                nest: true
-            }
-        )
-       return products
-    }
-
 }
 
 module.exports = Db;
