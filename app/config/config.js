@@ -27,11 +27,14 @@ const config = {
         }
     },
     db: {
-        host: 'localhost',
+        host: '192.168.65.50',
         port: 5432,
         name: 'xxx',
         user: 'xxx',
         password: 'xxx'
+    },
+    tg: {
+        token: 'xxx'
     }
 };
 
