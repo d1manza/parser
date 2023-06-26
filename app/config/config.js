@@ -7,9 +7,6 @@ function getEnv(name, defaults) {
 }
 
 const config = {
-    url: {
-        sbermegamarket: 'https://sbermegamarket.ru/catalog/'
-    },
     cockies: {
         sbermegamarket: {
             'accept': 'application/json',

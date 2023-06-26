@@ -9,7 +9,7 @@ const Categories = sequelize.define('categories', {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    url_postfix: {
+    url: {
         type: DataTypes.STRING,
         allowNull: false
     },

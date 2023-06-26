@@ -29,7 +29,7 @@ class Db {
     async selectCategories() {
         const categories = await Categories.findAll({
             raw: true,
-            attributes: ['id', 'name', 'url_postfix', 'page_count', 'cashback_coef']
+            attributes: ['id', 'name', 'url', 'page_count', 'cashback_coef']
         });
         if (categories) {
             return categories

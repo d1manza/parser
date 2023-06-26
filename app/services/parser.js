@@ -13,7 +13,7 @@ class Parser {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
             await page.setExtraHTTPHeaders(config.cockies.sbermegamarket);
-            await page.goto(`${config.url.sbermegamarket}${categories.url_postfix}/page-${i}/`);
+            await page.goto(`${categories.url}/page-${i}/`);
             await page.waitForTimeout(4000);
             let data = await page.evaluate(await this.processing);
             await browser.close();
