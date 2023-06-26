@@ -32,12 +32,9 @@ const config = {
     db: {
         host: 'localhost',
         port: 5432,
-        name: 'parser',
-        user: 'postgres',
-        password: '04189666216d'
-    },
-    tg: {
-        token: '6020383410:AAG-HTWRv0glOvWCg5grMK-JkjkSQYmRj9Y'
+        name: 'xxx',
+        user: 'xxx',
+        password: 'xxx'
     }
 };
 
