@@ -1,10 +1,5 @@
 const ParsingUrls = require('../model/parsingUrls');
 const Categories = require('../model/categories');
-const config = require('../config/config');
-const {Sequelize} = require('sequelize');
-const sequelize = new Sequelize(`postgres://${config.db.user}:${config.db.password}@${config.db.host}:${config.db.port}/${config.db.name}`, {
-    logging: false
-});
 
 class Db {
     constructor() {
