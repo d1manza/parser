@@ -1,9 +1,13 @@
+const { setIntervalAsync } = require('set-interval-async');
+const config = require('./app/config/config');
 const Parse = require('./app/services/parser');
 const parse = new Parse();
 const Db = require('./app/services/db');
 const db = new Db();
 const Tg = require('./app/services/tg');
+const {normalizeQueryConfig} = require("pg/lib/utils");
 const tg = new Tg;
+
 
 async function run() {
     const categories = await db.getCategories();
@@ -32,7 +36,17 @@ async function run() {
     }
 }
 
-run();
+async function start()
+{
+    await run();
+    console.log(`Parsing worked successfully. next run in ${config.settings.interval/60/1000} minutes`);
+    setIntervalAsync(() => {
+        run();
+        console.log(`Parsing worked successfully. next run in ${config.settings.interval/60/1000} minutes`);
+    }, config.settings.interval);
+}
+
+start();
 
 
 
