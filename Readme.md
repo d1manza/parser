@@ -41,6 +41,6 @@ path: `./app/config.js`
         token: 'xxx' //token telegram bot
 },
     settings: {
-        interval: 300000 //application launch frequency
+        interval: 30 //application launch frequency (minutes)
 }
 ```

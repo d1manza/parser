@@ -39,11 +39,11 @@ async function run() {
 async function start()
 {
     await run();
-    console.log(`Parsing worked successfully. next run in ${config.settings.interval/60/1000} minutes`);
+    console.log(`Parsing worked successfully. next run in ${config.settings.interval} minutes`);
     setIntervalAsync(() => {
         run();
-        console.log(`Parsing worked successfully. next run in ${config.settings.interval/60/1000} minutes`);
-    }, config.settings.interval);
+        console.log(`Parsing worked successfully. next run in ${config.settings.interval} minutes`);
+    }, config.settings.interval * 60 * 1000);
 }
 
 start();
