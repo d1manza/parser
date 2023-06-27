@@ -40,22 +40,21 @@ class Db {
     }
 
     async getParsingUrl() {
-        const products = await sequelize.query('with products as (select pu.name                                                 names,\n' +
-            '                         pu.url                                                  url,\n' +
-            '                         pu.cost                                                 costs,\n' +
-            '                         pu.cashback                                             cashback,\n' +
-            '                         round(pu.cashback::numeric / pu.cost::numeric, 2) * 100 parcent_cashback,\n' +
-            '                         pu.categories_id                                        categories_id,\n' +
-            '                         c.name                                                  categories_name\n' +
-            '                  from parsing_urls pu\n' +
-            '                           join categories c on c.id = pu.categories_id\n' +
-            '                  order by 4 desc\n' +
-            '                  limit 3)\n' +
-            'select products.categories_id                            categories_id,\n' +
-            '       products.categories_name                          categories_name,\n' +
-            '       count(products.url)                               count_products,\n' +
+        const products = await sequelize.query('select products.categories_id                                   categories_id,\n' +
+            '       c.name                                                   categories_name,\n' +
+            '       count(products.url)                                      count_products,\n' +
             '       string_agg(concat(\'Наименование товара: \', products.names, \', \n\', \'Ссылка: \', products.url, \' \n\', \'Стоимость: \', products.costs, \' \n\', \'Кэшбек: \', products.cashback, \' \n\', \'Вернется бонусами: \', products.parcent_cashback, \'%\n\'), \' \n\') card_product\n' +
-            'from products\n' +
+            'from (select pu.categories_id                                                                                        categories_id,\n' +
+            '             pu.name                                                                                                 names,\n' +
+            '             pu.cost                                                                                                 costs,\n' +
+            '             pu.url                                                                                                  url,\n' +
+            '             pu.cashback                                                                                             cashback,\n' +
+            '             round(pu.cashback::numeric / pu.cost::numeric, 2) * 100                                                 parcent_cashback,\n' +
+            '             row_number() over (partition by pu.categories_id order by pu.cashback::numeric / pu.cost::numeric desc) row\n' +
+            '      from parsing_urls pu\n' +
+            '      where pu."deletedAt" is null) products\n' +
+            '         join categories c on c.id = products.categories_id\n' +
+            'where products.row <= 3\n' +
             'group by 1, 2;', {
                 nest: true
             }

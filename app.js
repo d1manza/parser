@@ -16,7 +16,7 @@ async function run() {
             const topActions = await db.getParsingUrl();
             if (topActions.length !== 0) {
                 for (const item of topActions) {
-                    const message = `В категории: ${item.categories_name} найдено ${item.count_products} лучших товара:\n\n${item.card_product}`;
+                    const message = `В категории: <b>${item.categories_name}</b> найдено <b>${item.count_products}</b> лучших товара:\n\n${item.card_product}`;
                     for (const item of tgUsers) {
                         await tg.sendAlarms(item.tg_id, message);
                     }
@@ -25,7 +25,7 @@ async function run() {
                 console.log('No promotions found to send');
             }
         } else {
-            console.log('No users to send')
+            console.log('No users to send');
         }
     } else {
         console.log('Not categories from parsing');

@@ -7,8 +7,8 @@ class Tg {
 
     async sendAlarms(chatId, message) {
         const bot = new TelegramBot(config.tg.token, {polling: false});
-        await bot.sendMessage(chatId, message);
-        console.log(`The mailing was made for a user with id: ${chatId}`)
+        await bot.sendMessage(chatId, message, {'parse_mode': 'html'});
+        console.log(`The mailing was made for a user with id: ${chatId}`);
     }
 
 }
