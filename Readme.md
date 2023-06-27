@@ -44,4 +44,3 @@ path: `./app/config.js`
         interval: 300000 //application launch frequency
 }
 ```
-
