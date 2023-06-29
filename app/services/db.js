@@ -30,7 +30,10 @@ class Db {
     async getCategories() {
         const categories = await Categories.findAll({
             raw: true,
-            attributes: ['id', 'name', 'url', 'page_count', 'cashback_coef']
+            attributes: ['id', 'name', 'url', 'page_count', 'cashback_coef'],
+            where: {
+                deletedAt: null
+            }
         });
         if (categories) {
             return categories
