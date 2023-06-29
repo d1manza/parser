@@ -9,30 +9,64 @@ class Parser {
     constructor() {
     }
 
-    async parsePage(url, page) {
+    async parsing() {
+        try {
+            const getCategories = await db.getCategories();
+            if (getCategories) {
+                shared.logging('getCategories', 'successfully', 'categories received');
+                for (const item of getCategories) {
+                    for (let i = 1; i <= item.page_count; i++) {
+                        shared.logging('parsePage', 'start work', `Start parsing categories ${item.name}, page - ${i}`);
+                        const parsePage = await this.parsePage(item.url, i, item.cashback_coef, item.id);
+                        if (parsePage) {
+                            shared.logging('parsePage', 'successfully', `End parsing categories ${item.name}, page - ${i}`);
+                            for (const list of parsePage) {
+                                const findOrCreateParsingUrl = await db.findOrCreateParsingUrl(list);
+                                if (findOrCreateParsingUrl) {
+                                    shared.logging('findOrCreateParsingUrl', 'successfully', `Data categories ${item.name}, page - ${i} added in DB`);
+                                } else {
+                                    shared.logging('findOrCreateParsingUrl', 'error', `Data categories ${item.name}, page - ${i} error added in DB`);
+                                    return false
+                                }
+                            }
+                        } else {
+                            shared.logging('parsePage', 'error', `Error parsing categories ${item.name}, page - ${i}`);
+                            return false
+                        }
+                    }
+                }
+            } else {
+                shared.logging('getCategories', 'error', 'failed to get categories');
+                return false
+            }
+            return true
+        } catch {
+            return false
+        }
+    }
+
+    async parsePage(url, sheet, cashbackCoef, categories_id) {
         try {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
             await page.setExtraHTTPHeaders(config.cockies.sbermegamarket);
-            await page.goto(`${url}/page-${page}/`);
+            await page.goto(`${url}/page-${sheet}/`);
             await page.waitForTimeout(4000);
-            const catalogItem = await document.getElementsByClassName('catalog-item');
-            const data = await page.evaluate(items => catalogItem);
-            await console.log(data);
+            const data = await page.evaluate(await this.processing);
             await browser.close();
-            /*for (const item of data) {
-                if (item.cashback / item.cost >= categories.cashback_coef) {
-                    let result = {
+            let result = [];
+            for (const item of data) {
+                if (item.cashback / item.cost >= cashbackCoef && item.url !== '') {
+                    result.push({
                         name: item.name,
                         cost: item.cost,
                         cashback: item.cashback,
                         url: item.url,
-                        categories_id: categories.id
-                    };
-                    await db.findOrCreateParsingUrl(result);
+                        categories_id: categories_id
+                    });
                 }
-            }*/
-            return data
+            }
+            return result
         } catch {
             return false
         }
@@ -46,14 +80,12 @@ class Parser {
             let cost = Number(item.getElementsByClassName('item-price')[0].innerText.replace(/[^+\d]/g, ''));
             let cashback = Number(item.getElementsByClassName('item-bonus')[0].innerText.replace(/[^+\d]/g, ''));
             let url = item.getElementsByClassName('item-image-block')[0].href;
-            if (url !== '') {
-                results.push({
-                    name: name,
-                    cost: cost,
-                    cashback: cashback,
-                    url: url
-                });
-            }
+            results.push({
+                name: name,
+                cost: cost,
+                cashback: cashback,
+                url: url
+            });
         }
         return results
     }
