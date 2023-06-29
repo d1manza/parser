@@ -7,28 +7,27 @@ const sequelize = new Sequelize(`postgres://${config.db.user}:${config.db.passwo
 /*-- auto-generated definition
 create table categories
 (
-    id            serial
-        constraint categories_pk
-            primary key,
+    id            serial                                 not null
+constraint categories_pk
+primary key,
     name          varchar                                not null,
     url           varchar                                not null,
     page_count    integer                                not null,
     "createdAt"   timestamp with time zone default now() not null,
     "updatedAt"   timestamp with time zone default now() not null,
     cashback_coef double precision         default 0.3   not null,
-    "deletedAt"   timestamp with time zone
+    "deletedAt"   timestamp with time zone,
+    users_id      integer                                not null
 );
 
 alter table categories
-    owner to postgres;
+owner to postgres;
 
 create unique index categories_id_uindex
-    on categories (id);
+on categories (id);
 
 create unique index categories_url_postfix_uindex
-    on categories (url);
-
-*/
+on categories (url);*/
 
 const Categories = sequelize.define('categories', {
     name: {
@@ -61,6 +60,10 @@ const Categories = sequelize.define('categories', {
     deletedAt: {
         type: DataTypes.DATE,
         allowNull: true
+    },
+    users_id: {
+        type: DataTypes.NUMBER,
+        allowNull: false,
     }
 }, {});
 
