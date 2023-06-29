@@ -2,22 +2,25 @@ const config = require('../config/config');
 const puppeteer = require('puppeteer');
 const Db = require('./db');
 const db = new Db();
+const Shared = require('./shared');
+const shared = new Shared();
 
 class Parser {
     constructor() {
     }
 
-    async parsePage(categories) {
-        for (let i = 1; i <= categories.page_count; i++) {
-            console.log(`Start parsing categories ${categories.name}, page - ${i}`);
+    async parsePage(url, page) {
+        try {
             const browser = await puppeteer.launch();
             const page = await browser.newPage();
             await page.setExtraHTTPHeaders(config.cockies.sbermegamarket);
-            await page.goto(`${categories.url}/page-${i}/`);
+            await page.goto(`${url}/page-${page}/`);
             await page.waitForTimeout(4000);
-            let data = await page.evaluate(await this.processing);
+            const catalogItem = await document.getElementsByClassName('catalog-item');
+            const data = await page.evaluate(items => catalogItem);
+            await console.log(data);
             await browser.close();
-            for (const item of data) {
+            /*for (const item of data) {
                 if (item.cashback / item.cost >= categories.cashback_coef) {
                     let result = {
                         name: item.name,
@@ -28,9 +31,10 @@ class Parser {
                     };
                     await db.findOrCreateParsingUrl(result);
                 }
-            }
-
-            console.log(`End parsing categories ${categories.name}, page - ${i}`);
+            }*/
+            return data
+        } catch {
+            return false
         }
     }
 
@@ -42,7 +46,7 @@ class Parser {
             let cost = Number(item.getElementsByClassName('item-price')[0].innerText.replace(/[^+\d]/g, ''));
             let cashback = Number(item.getElementsByClassName('item-bonus')[0].innerText.replace(/[^+\d]/g, ''));
             let url = item.getElementsByClassName('item-image-block')[0].href;
-            if (url != '') {
+            if (url !== '') {
                 results.push({
                     name: name,
                     cost: cost,
