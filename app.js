@@ -5,19 +5,6 @@ const start = new Start();
 const Shared = require('./app/services/shared');
 const shared = new Shared();
 
-/*async function run() {
-    const result = await start.start();
-    if(!result) {
-        await start.start();
-    } else {
-        console.log(123);
-        await shared.sleep(config.settings.interval);
-        await run();
-    }
-}
-
-run();*/
-
 async function run() {
     await shared.logging('start', 'start work', `Start parsing + mailing`);
     const go = await start.start();
