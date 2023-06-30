@@ -20,10 +20,13 @@ class Start {
                 shared.logging('mailing', 'successfully', `End mailing`);
             } else {
                 shared.logging('parsing', 'error', `Error mailing`);
+                return false
             }
         } else {
             shared.logging('parsing', 'error', `Error parsing`);
+            return false
         }
+        return true
     }
 
 }

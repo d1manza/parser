@@ -27,7 +27,7 @@ const config = {
         }
     },
     db: {
-        host: '192.168.65.50',
+        host: 'localhost',
         port: 5432,
         name: 'xxx',
         user: 'xxx',
@@ -35,6 +35,10 @@ const config = {
     },
     tg: {
         token: 'xxx'
+    },
+    settings: {
+        intervalSuccessfulLaunch: 30,
+        intervalFailedLaunch: 1,
     }
 };
 
