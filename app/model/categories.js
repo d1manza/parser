@@ -7,9 +7,9 @@ const sequelize = new Sequelize(`postgres://${config.db.user}:${config.db.passwo
 /*-- auto-generated definition
 create table categories
 (
-    id            serial                                 not null
-constraint categories_pk
-primary key,
+    id            serial
+        constraint categories_pk
+            primary key,
     name          varchar                                not null,
     url           varchar                                not null,
     page_count    integer                                not null,
@@ -21,13 +21,15 @@ primary key,
 );
 
 alter table categories
-owner to postgres;
+    owner to postgres;
 
 create unique index categories_id_uindex
-on categories (id);
+    on categories (id);
 
 create unique index categories_url_postfix_uindex
-on categories (url);*/
+    on categories (url);
+
+*/
 
 const Categories = sequelize.define('categories', {
     name: {
@@ -61,7 +63,7 @@ const Categories = sequelize.define('categories', {
         type: DataTypes.DATE,
         allowNull: true
     },
-    users_id: {
+    create_user_id: {
         type: DataTypes.NUMBER,
         allowNull: false,
     }
